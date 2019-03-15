@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { Group } from '@/constants'
 
 // weight越高 侧边栏同组位置越靠下
@@ -62,12 +63,7 @@ const routerData = [
 export default routerData
 
 export function getMenu() {
-  const obj = {}
-  // 将没有二级导航的过滤掉
-  routerData.forEach(r => {
-    if (!obj[r.group]) obj[r.group] = []
-    obj[r.group].push(r)
-  })
+  const obj = _.groupBy(routerData, 'group')
   // 排序
   Object.keys(obj).forEach(group => {
     obj[group] = obj[group].sort((a, b) => a.weight - b.weight)
