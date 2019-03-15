@@ -1,5 +1,7 @@
 <template>
-  <div class="daily-data-container">日常数据</div>
+  <div class="daily-data-container">
+    <router-view />
+  </div>
 </template>
 
 <style lang="scss" scoped>

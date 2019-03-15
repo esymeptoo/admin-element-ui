@@ -27,13 +27,18 @@
               <el-menu-item
                 v-for="item in group.children"
                 :key="item.path"
-                :index="item.path"
+                :route="{ name: item.name }"
+                :index="item.name"
               >
                 {{ item.routeName }}
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item :index="group.path" v-else>
+          <el-menu-item
+            :index="group.name"
+            :route="{ name: group.name }"
+            v-else
+          >
             <i
               v-if="group.icon"
               :class="group.icon"
@@ -63,9 +68,14 @@ export default {
       currentActive: '',
     }
   },
+  watch: {
+    '$route'(n) {
+      this.currentActive = n.path.split('/')[1]
+    },
+  },
   mounted() {
     bus.$on(BusEvent.TOGGLE_MENU, this.handleExpand.bind(this))
-    this.currentActive = this.$route.path.slice(1)
+    this.currentActive = this.$route.path.split('/')[1]
   },
   methods: {
     handleExpand() {

@@ -10,13 +10,23 @@ const routerData = [
     group: Group.HOME,
   },
   {
-    path: 'daily_data',
+    path: '/daily_data',
     name: 'daily_data',
     component: resolve => require(['../pages/Data/DailyData'], resolve),
     icon: 'el-icon-document',
     group: Group.DATA,
     weight: 10,
     routeName: '日常数据',
+    redirect: {
+      name: 'daily_data_view',
+    },
+    children: [
+      {
+        path: 'daily_data_view',
+        name: 'daily_data_view',
+        component: resolve => require(['../pages/Data/DailyDataView'], resolve),
+      },
+    ],
   },
   {
     path: 'user_data',
