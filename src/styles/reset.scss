@@ -1,0 +1,26 @@
+@import './font.scss';
+
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: $font-family-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+}
