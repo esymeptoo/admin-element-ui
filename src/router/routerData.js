@@ -8,6 +8,7 @@ const routerData = [
     component: resolve => require(['../pages/Home/Index'], resolve),
     icon: 'el-icon-document',
     group: Group.HOME,
+    weight: 0,
   },
   {
     path: '/daily_data',
@@ -24,6 +25,7 @@ const routerData = [
       {
         path: 'daily_data_view',
         name: 'daily_data_view',
+        routeName: '日常数据展示',
         component: resolve => require(['../pages/Data/DailyDataView'], resolve),
       },
     ],

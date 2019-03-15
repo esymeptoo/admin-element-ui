@@ -30,7 +30,13 @@
                 :route="{ name: item.name }"
                 :index="item.name"
               >
-                {{ item.routeName }}
+                <template>
+                  <i
+                    v-if="item.icon"
+                    :class="item.icon"
+                  />
+                  <span>{{ item.routeName }}</span>
+                </template>
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
