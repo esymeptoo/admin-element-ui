@@ -23,6 +23,15 @@ export const GroupName = {
   },
 }
 
+// 侧边栏展示的页面数量
+export const RouterName = {
+  Index: 'index',
+  DAILY_DATA: 'daily_data',
+  USER_DATA: 'user_data',
+  ACCOUNT_SETTINGS: 'account_settings',
+  EMPLOYEE_SETTINGS: 'employee_settings',
+}
+
 export const BusEvent = {
   TOGGLE_MENU: 'toggle_menu',
 }

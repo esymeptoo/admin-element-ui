@@ -43,7 +43,7 @@
           <el-menu-item
             :index="group.name"
             :route="{ name: group.name }"
-            v-else
+            v-else-if="group.single"
           >
             <i
               v-if="group.icon"

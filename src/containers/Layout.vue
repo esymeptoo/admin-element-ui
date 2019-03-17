@@ -2,6 +2,7 @@
   <div class="layout-container">
     <div class="left-layout">
       <sider-bar
+        v-if="groups.length"
         :groups="groups"
       />
     </div>
@@ -24,9 +25,10 @@ import _ from 'lodash'
 import SiderBar from '@/containers/SiderBar'
 import bus from '@/Bus'
 import { BusEvent, GroupName } from '@/constants'
-import { menus } from '@/router/routerData'
+import { getMenu } from '@/router/routerData'
+import profile from '@/mock/profile'
 
-function menuGroupCompositor(groups) {
+function menuGroupCompositor(groups, menus) {
   return Object
     .keys(groups)
     .map(g => {
@@ -36,6 +38,7 @@ function menuGroupCompositor(groups) {
           group: g,
           ...groups[g],
           ...menus[g][0],
+          weight: groups[g].weight,
         }
       }
       return {
@@ -53,8 +56,14 @@ export default {
   },
   data() {
     return {
-      groups: menuGroupCompositor(GroupName),
+      groups: [],
     }
+  },
+  async mounted() {
+    const userProfile = await Promise.resolve(profile)
+    const menus = getMenu(userProfile)
+    this.groups = menuGroupCompositor(GroupName, menus)
+    console.log(this.groups)
   },
   methods: {
     toggleSiderBar: _.debounce(function () {

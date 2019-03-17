@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Group } from '@/constants'
 
 // weight越高 侧边栏同组位置越靠下
+// 侧边栏组件暂时只能接受两层导航
 const routerData = [
   {
     path: 'index',
@@ -10,6 +11,7 @@ const routerData = [
     icon: 'el-icon-document',
     group: Group.HOME,
     weight: 0,
+    permissionChecked: ({ permission }) => permission.includes('index'),
   },
   {
     path: '/daily_data',
@@ -22,6 +24,8 @@ const routerData = [
     redirect: {
       name: 'daily_data_view',
     },
+    permissionChecked: ({ permission }) => permission.includes('daily_data'),
+    // 这些都不是展示在侧边栏的
     children: [
       {
         path: 'daily_data_view',
@@ -39,6 +43,7 @@ const routerData = [
     group: Group.DATA,
     weight: 20,
     routeName: '用户数据',
+    permissionChecked: ({ permission }) => permission.includes('user_data'),
   },
   {
     path: 'account_settings',
@@ -48,6 +53,7 @@ const routerData = [
     group: Group.SETTINGS,
     weight: 10,
     routeName: '账号设置',
+    permissionChecked: ({ permission }) => permission.includes('account_settings'),
   },
   {
     path: 'employee_settings',
@@ -57,13 +63,19 @@ const routerData = [
     group: Group.SETTINGS,
     weight: 20,
     routeName: '员工设置',
+    permissionChecked: ({ permission }) => permission.includes('employee_settings'),
   },
 ]
 
 export default routerData
 
-export function getMenu() {
-  const obj = _.groupBy(routerData, 'group')
+export function getMenu(profile) {
+  const obj = _.groupBy(
+    routerData.filter(r => {
+      return r.permissionChecked ? r.permissionChecked(profile) : true
+    }),
+    'group',
+  )
   // 排序
   Object.keys(obj).forEach(group => {
     obj[group] = obj[group].sort((a, b) => a.weight - b.weight)
@@ -71,4 +83,4 @@ export function getMenu() {
   return obj
 }
 
-export const menus = getMenu()
+// export const menus = getMenu()
