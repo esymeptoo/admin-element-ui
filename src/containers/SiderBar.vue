@@ -6,6 +6,7 @@
     <div class="menu-bar">
       <el-menu
         router
+        collapse-transition
         :default-active="currentActive"
         class="el-menu-vertical"
         :collapse="expanded"

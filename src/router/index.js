@@ -8,7 +8,7 @@ import routerData from './routerData'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: 'vue-admin-template',
   routes: [
@@ -35,3 +35,5 @@ export default new Router({
     },
   ],
 })
+
+export default router

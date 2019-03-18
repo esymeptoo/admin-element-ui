@@ -1,5 +1,5 @@
 <template>
   <div>
-    <p>首页</p>
+    <p>403 forbidden</p>
   </div>
 </template>

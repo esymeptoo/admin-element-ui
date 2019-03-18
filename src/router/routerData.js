@@ -3,6 +3,8 @@ import { Group } from '@/constants'
 
 // weight越高 侧边栏同组位置越靠下
 // 侧边栏组件暂时只能接受两层导航
+// FIXME: 照理说permissionChecked应该是在用户是否订阅这个业务与否进行展示的 而不是放在权限这层控制 但是为了从简 暂时先这样
+// FIXME: 三极路由的权限目前是跟随二级路由的 但如果是平铺在一起 就需要一个hideInMenu变量来控制是否需要展示在侧边栏上
 const routerData = [
   {
     path: 'index',
@@ -70,17 +72,19 @@ const routerData = [
 export default routerData
 
 export function getMenu(profile) {
-  const obj = _.groupBy(
-    routerData.filter(r => {
-      return r.permissionChecked ? r.permissionChecked(profile) : true
-    }),
+  const permissionMenus = routerData.filter(r => {
+    return r.permissionChecked ? r.permissionChecked(profile) : true
+  })
+  const finalMenus = _.groupBy(
+    permissionMenus,
     'group',
   )
   // 排序
-  Object.keys(obj).forEach(group => {
-    obj[group] = obj[group].sort((a, b) => a.weight - b.weight)
+  Object.keys(finalMenus).forEach(group => {
+    finalMenus[group] = finalMenus[group].sort((a, b) => a.weight - b.weight)
   })
-  return obj
+  return {
+    permissionMenus,
+    finalMenus,
+  }
 }
-
-// export const menus = getMenu()

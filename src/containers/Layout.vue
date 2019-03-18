@@ -13,8 +13,12 @@
         </div>
         <div class="header-content"></div>
       </div>
-      <div class="content-layout">
-        <router-view />
+      <div
+        v-if="profile"
+        class="content-layout"
+      >
+        <not-permission v-if="!isPermissionPass" />
+        <router-view v-else />
       </div>
     </div>
   </div>
@@ -23,6 +27,7 @@
 <script>
 import _ from 'lodash'
 import SiderBar from '@/containers/SiderBar'
+import NotPermission from '@/pages/403Permission/403'
 import bus from '@/Bus'
 import { BusEvent, GroupName } from '@/constants'
 import { getMenu } from '@/router/routerData'
@@ -53,17 +58,27 @@ function menuGroupCompositor(groups, menus) {
 export default {
   components: {
     SiderBar,
+    NotPermission,
   },
   data() {
     return {
       groups: [],
+      profile: null,
+      menus: [],
     }
+  },
+  computed: {
+    isPermissionPass() {
+      const { permission } = this.profile
+      return permission.includes(this.$route.name) || this.menus.find(m => m.name === this.$route.name)
+    },
   },
   async mounted() {
     const userProfile = await Promise.resolve(profile)
-    const menus = getMenu(userProfile)
-    this.groups = menuGroupCompositor(GroupName, menus)
-    console.log(this.groups)
+    const { finalMenus, permissionMenus } = getMenu(userProfile)
+    this.profile = userProfile
+    this.menus = permissionMenus
+    this.groups = menuGroupCompositor(GroupName, finalMenus)
   },
   methods: {
     toggleSiderBar: _.debounce(function () {
