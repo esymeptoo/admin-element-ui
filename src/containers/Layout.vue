@@ -65,6 +65,7 @@ export default {
       groups: [],
       profile: null,
       menus: [],
+      text: '',
     }
   },
   computed: {

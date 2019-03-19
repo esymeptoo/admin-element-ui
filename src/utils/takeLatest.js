@@ -1,7 +1,8 @@
 /*
 * takeLatest
+* vuex中使用
 * */
-export function takeLatest(action) {
+export function takeLatestInVuex(action) {
   let lastRun = null
   return async (context, payload) => {
     const currentRun = Date.now()
@@ -34,6 +35,38 @@ export function takeLatest(action) {
         console.log('actions aborted, latest action work')
       } else {
         // 接口层报错抛出
+        throw e
+      }
+    }
+  }
+}
+
+/*
+* 页面上使用
+* @params 异步操作
+* @params 异步回调 模拟vuex的commit
+* */
+function takeLatestInVue(action, cb) {
+  let latest = null
+  return async function (...args) {
+    const current = Date.now()
+    latest = current
+    const context = this
+    const commit = function (...commitArgs) {
+      if (current !== latest) {
+        throw new Error('actionTakeLatest')
+      }
+      return cb.apply(context, commitArgs)
+    }
+    try {
+      return await action.call(this, {
+        originArgs: args,
+        commit,
+      })
+    } catch (e) {
+      if (e.message === 'actionTakeLatest') {
+        console.log('action aborted')
+      } else {
         throw e
       }
     }
