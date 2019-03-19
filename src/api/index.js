@@ -5,7 +5,8 @@ import profileApi from './profile'
 
 const request = createRequest({
   baseURL: runtime.apiBaseUrl,
-  headers: {'X-Custom-Header': 'foobar'},
+  // header demo
+  // headers: {'X-Custom-Header': 'foobar'},
 })
 
 // 登录之后设置header信息等
